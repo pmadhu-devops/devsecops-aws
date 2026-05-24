@@ -1,13 +1,13 @@
 #!/bin/bash
 
+# Varibales
 AMI_ID="ami-0220d79f3f480ecf5"
 SG_ID="sg-01a33a952f8c175f7" # replace with your SG ID
 INSTANCES=("mongodb" "redis" "mysql" "rabbitmq" "catalogue" "user" "cart" "shipping" "payment" "dispatch" "frontend")
 ZONE_ID="Z03742582X1XY9L5YCS7Y" # replace with your ZONE ID
 DOMAIN_NAME="devops2025.shop" # replace with your domain
 
-#for instance in ${INSTANCES[@]}
-for instance in $@
+for instance in ${INSTANCES[@]}
 do
     INSTANCE_ID=$(aws ec2 run-instances --image-id $AMI_ID --instance-type t3.micro --security-group-ids $SG_ID --tag-specifications "ResourceType=instance,Tags=[{Key=Name, Value=$instance}]" --query "Instances[0].InstanceId" --output text)
     if [ $instance != "frontend" ]
